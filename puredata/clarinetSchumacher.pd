@@ -1,0 +1,168 @@
+#N canvas 41 53 1239 747 10;
+#X obj 980 183 loadbang;
+#X obj 980 240 * 2;
+#X obj 980 262 / 343;
+#X text 940 218 l (m);
+#X obj 980 284 * 1000;
+#X text 1028 264 gives T (s);
+#X text 1031 284 in ms;
+#X text 227 5 pressure in mouth;
+#X text 432 147 pressure in reed;
+#X obj 587 47 loadbang;
+#X text 619 67 q_c;
+#X text 696 67 k;
+#X obj 161 214 -~;
+#X obj 161 322 *~;
+#X obj 161 273 *~;
+#X obj 399 226 -~;
+#X text 195 277 compute NL function;
+#X text 195 292 F(q)=k*(p-q)*(q-q_c);
+#X text 754 68 Z;
+#X text 191 328 output: f=F(q);
+#X obj 161 378 *~;
+#X text 197 378 Z*f;
+#X obj 161 400 +~;
+#X text 438 171 q;
+#X text 193 399 q + Z*f;
+#X obj 161 457 delwrite~ wave_out 1000;
+#X obj 980 341 delread~ wave_out;
+#X obj 998 362 loadbang;
+#X text 1011 412 q_h=r(t)<*>(q + Z*f);
+#X obj 702 301 +~;
+#X obj 980 412 *~;
+#X obj 702 424 tabwrite~ pressureReed;
+#N canvas 0 50 450 250 (subpatch) 0;
+#X array pressureReed 1000 float 1;
+#A 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0;
+#X coords 0 0.02 999 -0.02 200 140 1 0 0;
+#X restore 562 468 graph;
+#X text 736 302 q = q_h + Zf;
+#X obj 633 401 s~ q;
+#X obj 732 357 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+1;
+#X obj 474 454 dac~;
+#X obj 732 401 metro 50;
+#X obj 162 64 line~;
+#X obj 798 237 *~;
+#X obj 823 202 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+1;
+#X text 797 177 toggle feedback;
+#X msg 998 384 -1;
+#X msg 661 68 0.2;
+#X obj 721 93 s Z;
+#X obj 661 98 s k;
+#X obj 587 97 s q_c;
+#X obj 427 209 r q_c;
+#X obj 168 297 r k;
+#X obj 179 354 r Z;
+#X obj 865 20 vsl 15 128 0 0.5 0 0 empty empty empty 0 -9 0 10 -262144
+-1 -1 0 1;
+#X obj 161 422 clip~ -1 1;
+#X obj 162 190 +~;
+#X obj 180 157 *~ 0;
+#X obj 221 158 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+1;
+#X text 250 145 toggle tremolo;
+#X obj 180 135 *~ 0.005;
+#X msg 587 69 -2;
+#X msg 980 218 0.2;
+#X obj 180 113 osc~ 1;
+#X msg 721 68 1;
+#X obj 494 188 delwrite~ qdel 100;
+#X msg 220 48 0 1100;
+#X msg 106 52 2 200;
+#X obj 601 331 clip~ -0.1 0.1;
+#X obj 479 385 *~ 20;
+#X msg 1040 220 0.3;
+#X obj 392 148 r~ q;
+#X obj 399 169 z~ 1;
+#X obj 236 556 convolve~;
+#X floatatom 980 306 5 0 0 0 - - -, f 5;
+#X obj 914 60 loadbang;
+#X text 1092 69 a = sqrt(b/pi);
+#X text 1088 49 b = 4*ln(2)/((cte*T)**2);
+#X text 946 81 cte (%);
+#X msg 914 82 0.2;
+#X obj 914 104 expr 4*log(2)/((\$1*\$2q;
+#X connect 0 0 58 0;
+#X connect 1 0 2 0;
+#X connect 2 0 4 0;
+#X connect 4 0 26 0;
+#X connect 4 0 70 0;
+#X connect 9 0 57 0;
+#X connect 9 0 43 0;
+#X connect 9 0 60 0;
+#X connect 12 0 14 0;
+#X connect 13 0 20 0;
+#X connect 14 0 13 0;
+#X connect 15 0 14 1;
+#X connect 20 0 22 0;
+#X connect 20 0 29 1;
+#X connect 22 0 51 0;
+#X connect 26 0 30 0;
+#X connect 27 0 42 0;
+#X connect 29 0 64 0;
+#X connect 30 0 39 0;
+#X connect 35 0 37 0;
+#X connect 37 0 31 0;
+#X connect 38 0 52 0;
+#X connect 39 0 29 0;
+#X connect 40 0 39 1;
+#X connect 42 0 30 1;
+#X connect 43 0 45 0;
+#X connect 47 0 15 1;
+#X connect 48 0 13 1;
+#X connect 49 0 20 1;
+#X connect 50 0 45 0;
+#X connect 51 0 25 0;
+#X connect 52 0 12 0;
+#X connect 53 0 52 1;
+#X connect 54 0 53 1;
+#X connect 56 0 53 0;
+#X connect 57 0 46 0;
+#X connect 58 0 1 0;
+#X connect 59 0 56 0;
+#X connect 60 0 44 0;
+#X connect 62 0 38 0;
+#X connect 63 0 38 0;
+#X connect 64 0 34 0;
+#X connect 64 0 31 0;
+#X connect 64 0 65 0;
+#X connect 65 0 36 0;
+#X connect 65 0 36 1;
+#X connect 66 0 1 0;
+#X connect 68 0 12 1;
+#X connect 68 0 61 0;
+#X connect 68 0 15 0;
+#X connect 68 0 22 1;
+#X connect 71 0 75 0;
+#X connect 75 0 76 0;
