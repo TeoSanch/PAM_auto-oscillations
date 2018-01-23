@@ -1,0 +1,14 @@
+#N canvas 342 180 660 519 10;
+#X obj 431 246 inlet;
+#X obj 431 312 pow 0.5;
+#X obj 431 378 outlet;
+#X obj 431 334 * -1;
+#X obj 431 268 * -1694.92;
+#X obj 431 290 + 869003;
+#X obj 431 356 + 932.203;
+#X connect 0 0 4 0;
+#X connect 1 0 3 0;
+#X connect 3 0 6 0;
+#X connect 4 0 5 0;
+#X connect 5 0 1 0;
+#X connect 6 0 2 0;
