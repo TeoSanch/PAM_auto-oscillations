@@ -4,9 +4,10 @@
 % - descriptor (string) : 
 %   - "isSound" : son ou absence de son
 %   - "isCanard" : Canard ou non
-%   - "isQuasiPeriodic" : Régime quasi-périodique ou non 
 %   - "isRough" : Rugosité (plusieurs frontières/seuils)
 %   - "isBright : Brillance (plusieurs frontières/seuils)
+%   - "isQuasiPeriodic" : Régime quasi-périodique ou non 
+%   - "isOctavie" : Changement de regisres
 % - doe_samples : nombre d'échantillons du "Design of Experience"
 % - edsd_samples : nombre d'échantillonnage adaptatif
 function [] = svm_basson(descriptor, f0,...
@@ -29,15 +30,15 @@ function [] = svm_basson(descriptor, f0,...
     N_pext = t_max*Fe; % length of pext
     
     % Variations de gamma et zeta
-    gamma_min = 0.4; gamma_max = 1.1;
-    zeta_min = 0; zeta_max = 6;
+    gamma_min = 0.4; gamma_max = 1.1;   % Pression dans la bouche
+    zeta_min = 0; zeta_max = 6;         % Paramètre d'anche
     sprintf('Generating design of experience...')
     Latin_sample = lhsdesign(doe_samples, 2);
     
     % Rescaling
     gamma_sample = Latin_sample(:,1)*(gamma_max-gamma_min) + gamma_min;
     zeta_sample = Latin_sample(:,2)*(zeta_max-zeta_min) + zeta_min;
-    
+
     % Parmètres du DOE
     basson_samples = [gamma_sample zeta_sample];
     %% Audio descriptor
@@ -59,9 +60,13 @@ function [] = svm_basson(descriptor, f0,...
     svm_col=CODES.sampling.edsd(f,svm,[gamma_min zeta_min],[gamma_max zeta_max],...
         'iter_max',edsd_samples, 'conv', false);
     %% Plot
-    %figure(1)
-    %svm_col{end}.isoplot
-%
+    svm_fin = svm_col{end}
+    figure(1)
+    set(gca,'FontSize',26);
+    svm_col{end}.isoplot
+    xlabel('Force', 'Fontsize', 30)
+    ylabel('Vitesse', 'Fontsize', 30)
+    
     if strcmp(descriptor, 'isRough') ||strcmp(descriptor, 'isBright')
         svm_fin = svm_col{end};
         color = colormap;
@@ -87,7 +92,6 @@ function [] = svm_basson(descriptor, f0,...
         title('SVM roughness of the basson model');
         
     end
-    keyboard
     
    %% Save SVM edsd & images
     frequency = f0;
@@ -120,6 +124,9 @@ function [] = svm_basson(descriptor, f0,...
     savePngFilename = strcat('./basson/png/',savePngFilename);
     figure(2)
     finalSVM.isoplot('sv',false,'samples',false,'legend',false,'bcol','r')
+    set(gca,'FontSize',26);
+    xlabel('\gamma', 'Fontsize', 30)
+    ylabel('\zeta', 'Fontsize', 30)
     F = getframe;
 
     Im = frame2im(F);
