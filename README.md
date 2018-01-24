@@ -12,6 +12,7 @@ Ces descripteurs sont ensuite utilisés pour partitionner l'espace des paramètr
 
 - Les modèles temps réels se trouvent dans le dossier /Faust et /PureData.
 - Les modèles d'instruments non temps réels, les descripteurs et le calcul des cartographies sont dans le dossier /Matlab
+- Des exemples de synthèse audio sont dans le dossier /audio-examples
 
 ## Vidéo de démonstration
 
