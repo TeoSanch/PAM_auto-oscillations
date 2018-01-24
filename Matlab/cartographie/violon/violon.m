@@ -1,5 +1,32 @@
 function v = violon(vb_e,Fb_e,beta, t_max, Fe)
 
+%%% Ce programme est issu d'un exercice de TP de l'UE %%%%%%%%%%%%%%%%%
+%%% "Physique des Instruments de Musique" dispens� � %%%%%%%%%%%%%%%%%%
+%%% Le Mans Universit� par M. Frederic Ablitzer, Maitre de Conf�rences%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% La fonction violon prend en entr�e :
+%
+% vb_e : vitesse de l'archet
+%
+% Fb_e : effort normal de l'archet sur la corde
+%
+% beta : 0<beta<1, position de l'archet sur la corde
+%
+% t_max : dur�e du son
+%
+% Fe : fr�quence d'�chantillonnage
+%
+% La fonction saxophone retourne :
+%
+% v : la vitesse de la corde au point de frottement
+%
+% La fonction n�cessite l'utilisation de la fonction
+%                convolution.m 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 bool_plot = false;
 global dt Nh i
 
@@ -8,25 +35,25 @@ type_excitation = 0;
 % 1 : impulsion
 % 2 : pincement
 
-%% Paramètres de la corde
+%% Parametres de la corde
 T = 39.15; % tension (en N)
 mu = 2.34E-3; % masse linéique (en kg/m)
 L = 0.33; % longueur (en m)
 Zc = sqrt(mu*T); % impédance caractéristique
 c = sqrt(T/mu); % vitesse de propagation des ondes
 
-%% Paramètres de la loi de frottement
+%% Parametres de la loi de frottement
 mu_s = 0.5; % coefficient de frottement statique (sans unité)
 mu_d = 0.2; % coefficient de frottement dynamique (sans unité)
 v0 = 0.025; % paramètre de forme de la courbe (en m/s)
 
-%% Paramètres de jeu
+%% Parametres de jeu
 % beta = 0.07; % position relative de l'archet le long de la corde (sans unité)
 % Fb = 1; % force d'appui de l'archet sur la corde (en N)
 % 
 % vb = 0.05; % vitesse de l'archet (en m/s)*
 
-%% Paramètres de simulation
+%% Parametres de simulation
 Fe = 44100; % fréquence d'échantillonnage (en Hz)
 dt = 1/Fe; % pas temporel
 
@@ -35,14 +62,14 @@ t = [0:dt:t_max]; % vecteur temps
 Fb=Fb_e*ones(1,length(t));
 vb=vb_e*ones(1,length(t));
 
-%% Définition des fonctions de réflexion
-tau1 = (2*beta*L)/c; % durée d'un aller/retour d'une onde entre l'archet et le chevalet (portion 1)
-tau2 = (2*L*(1-beta))/c; % durée d'un aller/retour d'une onde entre l'archet et le doigt (portion 2)
+%% Definition des fonctions de reflexion
+tau1 = (2*beta*L)/c; % duree d'un aller/retour d'une onde entre l'archet et le chevalet (portion 1)
+tau2 = (2*L*(1-beta))/c; % duree d'un aller/retour d'une onde entre l'archet et le doigt (portion 2)
 
-tau1 = round(tau1/dt)*dt; % ajustement des retards (pour tomber sur des valeurs entières d'échantillons)
-tau2 = round(tau2/dt)*dt; % ajustement des retards (pour tomber sur des valeurs entières d'échantillons)
+tau1 = round(tau1/dt)*dt; % ajustement des retards (pour tomber sur des valeurs entieres d'echantillons)
+tau2 = round(tau2/dt)*dt; % ajustement des retards (pour tomber sur des valeurs entieres d'echantillons)
 
-Nh = round(1.2*max(tau1,tau2)/dt); % nombre d'échantillons pour les fonctions de réflexion (20% de marge)
+Nh = round(1.2*max(tau1,tau2)/dt); % nombre d'echantillons pour les fonctions de réflexion (20% de marge)
 th=[0:Nh-1]*dt; % support temporel des fonctions de réflexion
 
 epsilon = 0.005; % parametre d'amortissement
@@ -89,7 +116,7 @@ deltav = zeros(size(t)); % vitesse relative (vitesse corde - vitesse archet)
 stick = zeros(size(t)); % variable d'état ADHÉRENCE / GLISSEMENT
 stick(1) = 1;
 
-%% Définition des types d'excitation (autres que frottement)
+%% Definition des types d'excitation (autres que frottement)
 % IMPULSION
 f_impulse = zeros(length(t),1);
 f_impulse(1,1)=1;
@@ -101,7 +128,7 @@ coeff_pente=3;
 pente=coeff_pente*t(1:duree_pincement);
 f_pluck(1:duree_pincement,1)=pente;
 
-%% Résolution itérative
+%% Resolution iterative
 for i=1:length(t)
     
     % Calcul des ondes retour
@@ -120,11 +147,11 @@ for i=1:length(t)
             B = 1+((vh(i)-vb(i))/v0)+((mu_d*Fb(i))/(2*Zc*v0));
             C = vb(i)-vh(i)-((Fb(i)*mu_s)/(2*Zc)) ;
             
-            Delta = B^2-4*A*C; ; % calcul du discriminant
+            Delta = B^2-4*A*C; % calcul du discriminant
             
             % solutions (racines du polynome)
             deltav1 = (-B+sqrt(Delta))/(2*A);
-            deltav2 = (-B-sqrt(Delta))/(2*A) ;
+            deltav2 = (-B-sqrt(Delta))/(2*A);
             
             
             % RECHERCHE DU POINT SOLUTION
@@ -174,8 +201,8 @@ for i=1:length(t)
             end
             
             
-            % Décommenter pour afficher le point solution (intersection dynamique corde / loi de frottement)
-            %plotSolution
+            % Decommenter pour afficher le point solution (intersection dynamique corde / loi de frottement)
+            
             
         case 1 % impulsion
             
