@@ -1,4 +1,4 @@
-% La fonction svm_clarinet calcule la cartographie des états de la
+% La fonction svm_clarinet_3D calcule la cartographie des états de la
 % clarinette en fonction d'un descripteur donné.
 % Les entrées sont :
 % - descriptor (string) : 
@@ -31,10 +31,10 @@ function [] = svm_clarinet_3D(descriptor, f0,...
     % Variations de gamma et zeta
     midi_note = 12*log2(f0/440)+69;
     midi_min = midi_note-2; midi_max = midi_note+2;
-    f0_min = 2.^((midi_min-69)/12).*440;
+    f0_min = 2.^((midi_min-69)/12).*440; % On réduit l'invervalle de fréquence à explorer
     f0_max = 2.^((midi_max-69)/12).*440;
-    gamma_min = 0.1; gamma_max = 1.1;
-    zeta_min = 0.1; zeta_max = 1.1;
+    gamma_min = 0.1; gamma_max = 1.1;   % Pression dans la bouche
+    zeta_min = 0.1; zeta_max = 1.1;     % Paramètre d'anche
 
     sprintf('Generating design of experience...')
     Latin_sample = lhsdesign(doe_samples, 3);
@@ -45,7 +45,7 @@ function [] = svm_clarinet_3D(descriptor, f0,...
     f0_sample = Latin_sample(:,3)*(f0_max-f0_min) + f0_min;
     
     % Parmètres du DOE
-    clarinet_samples = [gamma_sample zeta_sample f0_sample]
+    clarinet_samples = [gamma_sample zeta_sample f0_sample];
     %% Audio descriptor
     f = @(x) classify_3D(x,f0);
     % Si la fonction f prend une liste de variables -> doit retourner une
@@ -64,10 +64,12 @@ function [] = svm_clarinet_3D(descriptor, f0,...
     svm_col=CODES.sampling.edsd(f,svm,[gamma_min zeta_min f0_min],...
         [gamma_max zeta_max f0_max],...
         'iter_max',edsd_samples, 'conv', false);
-    keyboard
     %% Plot
-%     figure(1)
-%     svm_col{end}.isoplot('bcol', 'y')
+    figure(1)
+    set(gca,'FontSize',26);
+    svm_col{end}.isoplot('sv',false,'samples',false,'legend',false,'bcol','r')
+    xlabel('Force', 'Fontsize', 30)
+    ylabel('Vitesse', 'Fontsize', 30)
   %% Save SVM edsd & images
     frequency = f0;
     %get directory of function
@@ -80,16 +82,19 @@ function [] = svm_clarinet_3D(descriptor, f0,...
         '_',num2str(gamma_max),'_',num2str(zeta_min),'_',num2str(zeta_max));
     % Save the 'svm' struct
     saveMatFilename = strcat(savefilename,'.mat');
-    mkdir('./clarinet/matFiles');
-    saveMatFilename = strcat('./clarinet/matFiles/',saveMatFilename);
+    mkdir('./clarinet_3D/matFiles');
+    saveMatFilename = strcat('./clarinet_3D/matFiles/',saveMatFilename);
     save(saveMatFilename, 'finalSVM')
 
     % Save graph as an image
     savePngFilename = strcat(savefilename,'.png');
-    mkdir('./clarinet/png');
-    savePngFilename = strcat('./clarinet/png/',savePngFilename);
-    figure()
+    mkdir('./clarinet_3D/png');
+    savePngFilename = strcat('./clarinet_3D/png/',savePngFilename);
+    figure(2)
     finalSVM.isoplot('sv',false,'samples',false,'legend',false,'bcol','r')
+    set(gca,'FontSize',26);
+    xlabel('\gamma', 'Fontsize', 30)
+    ylabel('\zeta', 'Fontsize', 30)
     F = getframe;
 
     Im = frame2im(F);
@@ -98,4 +103,5 @@ function [] = svm_clarinet_3D(descriptor, f0,...
 %     Im = imbinarize(Im);
 %     Im = imfill(Im,'holes');
     imwrite(Im,savePngFilename);    
+    keyboard
 end
