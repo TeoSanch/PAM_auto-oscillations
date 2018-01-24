@@ -60,7 +60,7 @@ function [] = svm_clarinet(descriptor, f0,...
     svm_col=CODES.sampling.edsd(f,svm,[gamma_min zeta_min],[gamma_max zeta_max],...
         'iter_max',edsd_samples, 'conv', false);
     %% Plot
-    figure(1)    figure(1)
+    figure(1)
     set(gca,'FontSize',26);
     svm_col{end}.isoplot
     xlabel('Force', 'Fontsize', 30)
