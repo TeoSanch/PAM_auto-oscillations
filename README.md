@@ -16,4 +16,4 @@ Ces descripteurs sont ensuite utilisés pour partitionner l'espace des paramètr
 
 ## Vidéo de démonstration
 
-https://youtu.be/os0KTHWFuuA
+https://youtu.be/Zk3OBpNxA9E
